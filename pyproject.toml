@@ -1,0 +1,29 @@
+[project]
+name = "md-ssg"
+version = "0.1"
+description = "Create a static website from markdown files"
+readme = "README.md"
+authors = [{name = "R.Keelan"}]
+license = {text = "Apache-2.0"}
+requires-python = ">=3.8"
+classifiers = [
+    "License :: OSI Approved :: Apache Software License"
+]
+dependencies = [
+    "click",
+    "jinja2",
+    "markdown",
+    "toml"
+]
+
+[project.urls]
+Homepage = "https://github.com/RKeelan/md-ssg"
+Changelog = "https://github.com/RKeelan/md-ssg/releases"
+Issues = "https://github.com/RKeelan/md-ssg/issues"
+CI = "https://github.com/RKeelan/md-ssg/actions"
+
+[project.scripts]
+md-ssg = "md_ssg.cli:cli"
+
+[project.optional-dependencies]
+test = ["pytest"]
