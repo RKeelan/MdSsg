@@ -12,7 +12,8 @@ import toml
 @click.command()
 @click.version_option()
 @click.argument('config_path', type=click.Path(exists=True))
-def cli(config_path):
+@click.option('-v', '--verbose', is_flag=True, help="Print verbose output")
+def cli(config_path, verbose):
     # Read the TOML configuration file
     with open(config_path, 'r') as f:
         config = toml.load(f)
@@ -64,6 +65,7 @@ def cli(config_path):
     for filename in os.listdir(content_dir):
         if filename.endswith('.md'):
             filepath = os.path.join(content_dir, filename)
+            
             with open(filepath, 'r', encoding='utf-8') as f:
                 md_content = f.read()
 
@@ -90,6 +92,9 @@ def cli(config_path):
             output_filepath = os.path.join(site_dir, output_filename)
             with open(output_filepath, 'w', encoding='utf-8') as f:
                 f.write(page_html)
+            
+            if verbose:
+                print(f"Generated '{output_filepath}' from '{filepath}'")
 
 def extract_title(md_content):
     # Regular expression to match the first level 1 header and following blank lines
