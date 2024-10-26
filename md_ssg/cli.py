@@ -61,40 +61,47 @@ def cli(config_path, verbose):
     # Load the page template
     page_template = env.get_template('page.html')
 
-    # Process each Markdown file in the content directory
-    for filename in os.listdir(content_dir):
-        if filename.endswith('.md'):
-            filepath = os.path.join(content_dir, filename)
-            
-            with open(filepath, 'r', encoding='utf-8') as f:
-                md_content = f.read()
+    # Process Markdown files recursively in the content directory
+    process_directory(content_dir, site_dir, env, page_template, css_files, verbose)
 
-            # Extract the page title and remove it from the content
-            page_title, md_content = extract_title(md_content)
+def process_directory(content_dir, site_dir, env, page_template, css_files, verbose):
+    for root, dirs, files in os.walk(content_dir):
+        for filename in files:
+            if filename.endswith('.md'):
+                input_filepath = os.path.join(root, filename)
+                relative_path = os.path.relpath(input_filepath, content_dir)
+                output_filepath = os.path.join(site_dir, os.path.splitext(relative_path)[0] + '.html')
 
-            if not page_title:
-                print(f"Error: No level 1 header found in {filename}")
-                sys.exit(1)
+                # Create the output directory if it doesn't exist
+                os.makedirs(os.path.dirname(output_filepath), exist_ok=True)
 
-            # Convert Markdown to HTML with footnotes support
-            html_content = markdown.markdown(md_content, extensions=['footnotes'])
+                with open(input_filepath, 'r', encoding='utf-8') as f:
+                    md_content = f.read()
 
-            # Render the page template with the necessary variables
-            page_html = page_template.render(
-                site_title=page_title,
-                page_title=page_title,
-                content=html_content,
-                css_files=css_files,
-            )
+                # Extract the page title and remove it from the content
+                page_title, md_content = extract_title(md_content)
 
-            # Write the rendered HTML to the output directory
-            output_filename = os.path.splitext(filename)[0] + '.html'
-            output_filepath = os.path.join(site_dir, output_filename)
-            with open(output_filepath, 'w', encoding='utf-8') as f:
-                f.write(page_html)
-            
-            if verbose:
-                print(f"Generated '{output_filepath}' from '{filepath}'")
+                if not page_title:
+                    print(f"Error: No level 1 header found in {input_filepath}")
+                    sys.exit(1)
+
+                # Convert Markdown to HTML with footnotes support
+                html_content = markdown.markdown(md_content, extensions=['footnotes'])
+
+                # Render the page template with the necessary variables
+                page_html = page_template.render(
+                    site_title=page_title,
+                    page_title=page_title,
+                    content=html_content,
+                    css_files=css_files,
+                )
+
+                # Write the rendered HTML to the output directory
+                with open(output_filepath, 'w', encoding='utf-8') as f:
+                    f.write(page_html)
+                
+                if verbose:
+                    print(f"Generated '{output_filepath}' from '{input_filepath}'")
 
 def extract_title(md_content):
     # Regular expression to match the first level 1 header and following blank lines
