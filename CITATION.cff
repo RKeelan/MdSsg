@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "md-ssg"
+version: "0.1"
+url: "https://github.com/RKeelan/md-ssg"
+repository-code: "https://github.com/RKeelan/md-ssg"
+abstract: "Create a static website from markdown files. A simple static site generator that converts markdown files into HTML using Jinja2 templating."
+keywords:
+  - static-site-generator
+  - markdown
+  - html
+  - cli
+license: Apache-2.0
+authors:
+  - family-names: "Keelan"
+    given-names: "R."
+preferred-citation:
+  type: software
+  title: "md-ssg"
+  version: "0.1"
+  url: "https://github.com/RKeelan/md-ssg"
+  authors:
+    - family-names: "Keelan"
+      given-names: "R." 

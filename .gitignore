@@ -7,3 +7,9 @@ venv
 .pytest_cache
 *.egg-info
 .DS_Store
+build/
+
+# Coverage files
+.coverage
+coverage.xml
+htmlcov

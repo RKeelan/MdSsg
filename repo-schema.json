@@ -1,0 +1,81 @@
+{
+  "name": "md-ssg",
+  "description": "Create a static website from markdown files",
+  "type": "python-package",
+  "category": "static-site-generator",
+  "language": "python",
+  "framework": "click",
+  "license": "Apache-2.0",
+  "repository": {
+    "url": "https://github.com/RKeelan/md-ssg",
+    "type": "git"
+  },
+  "package": {
+    "name": "md-ssg",
+    "version": "0.1",
+    "pypi": "https://pypi.org/project/md-ssg/",
+    "entry_points": {
+      "console_scripts": {
+        "md-ssg": "md_ssg.cli:cli"
+      }
+    }
+  },
+  "structure": {
+    "source": {
+      "main_module": "md_ssg/cli.py",
+      "description": "Main CLI module with static site generation implementation"
+    },
+    "tests": {
+      "directory": "tests/",
+      "framework": "pytest",
+      "coverage": {
+        "tool": "pytest-cov",
+        "threshold": 95,
+        "enforcement": "ci-fail-under",
+      }
+    },
+    "ci": {
+      "workflows": [
+        {
+          "name": "test.yml",
+          "description": "Run tests with coverage across multiple Python versions",
+          "triggers": ["push", "pull_request"]
+        },
+        {
+          "name": "publish.yml", 
+          "description": "Publish package to PyPI on release"
+        }
+      ]
+    },
+    "documentation": {
+      "readme": "README.md",
+      "license": "LICENSE"
+    }
+  },
+  "dependencies": {
+    "runtime": [
+      "click",
+      "jinja2",
+      "markdown",
+      "toml"
+    ],
+    "development": [
+      "coverage[toml]>=7.5",
+      "pytest>=8.0",
+      "pytest-cov>=5.0"
+    ]
+  },
+  "python": {
+    "minimum_version": "3.8",
+    "tested_versions": ["3.8", "3.9", "3.10", "3.11", "3.12"]
+  },
+  "features": [
+    "Generate static websites from markdown files",
+    "Command-line interface",
+    "Configurable output generation"
+  ],
+  "usage": {
+    "command": "md-ssg <config.toml>",
+    "description": "Create a static website from markdown files"
+  }
+} 
